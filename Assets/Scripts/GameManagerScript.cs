@@ -5,9 +5,11 @@ using UnityEngine;
 public class GameManagerScript : MonoBehaviour {
 	public GameObject mazePoint;
 	int layerNumber = 5;
+	Vector3[] mazePointCoordinates;
 
 	// Use this for initialization
 	void Start () {
+		mazePointCoordinates = new Vector3[layerNumber * 3];
 		CreateMaze();
 		
 	}
@@ -27,6 +29,8 @@ public class GameManagerScript : MonoBehaviour {
 			for(int j = 0; j < layerNumber; j++){
 				for(int k = 0; k < layerNumber; k++){
 					GameObject point = Instantiate(mazePoint, new Vector3(i * 2,j * 2,k * 2), Quaternion.identity);
+					point.transform.parent = mazeParent.transform;
+					mazePointCoordinates[i + j + k] = point.transform.position;
 				}
 			}
 		}
