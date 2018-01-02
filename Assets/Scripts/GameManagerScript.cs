@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class GameManagerScript : MonoBehaviour {
 	public GameObject mazePoint;
-	int layerNumber = 5;
+	public static int layerNumber = 5;
 	public static int multipleNumber = 2;
-	Vector3[] mazePointCoordinates;
+	public Vector3[,,] mazePointCoordinates;
+
+
+	void Awake(){
+		mazePointCoordinates = new Vector3[layerNumber,layerNumber,layerNumber];
+		CreateMaze();
+	}
 
 
 	// Use this for initialization
 	void Start () {
-		mazePointCoordinates = new Vector3[layerNumber * 3];
-		CreateMaze();
-		
+
 	}
 	
 	// Update is called once per frame
@@ -32,7 +36,7 @@ public class GameManagerScript : MonoBehaviour {
 				for(int k = 0; k < layerNumber; k++){
 					GameObject point = Instantiate(mazePoint, new Vector3(i * multipleNumber,j * multipleNumber,k * multipleNumber), Quaternion.identity);
 					point.transform.parent = mazeParent.transform;
-					mazePointCoordinates[i + j + k] = point.transform.position;
+					mazePointCoordinates[i,j,k] = point.transform.position;
 				}
 			}
 		}

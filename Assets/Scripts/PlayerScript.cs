@@ -7,67 +7,109 @@ public class PlayerScript : MonoBehaviour {
 	bool isMoveing;
 	Vector3 presentPosition;
 	Vector3 targetPosition;
+	Vector3[,,] mazePositions;
+	int posX, posY, posZ = 0;
+
+	enum dirStream{
+		up,
+		down
+	}
 
 	// Use this for initialization
 	void Start () {
-		isMoveing = false;
 		if(speed < 0.01f){
 			speed = 5f;
 		}
-		presentPosition = Vector3.zero;
-		
+		isMoveing = false;
+		mazePositions = GameObject.Find("GameManager").GetComponent<GameManagerScript>().mazePointCoordinates;
+		presentPosition = mazePositions[posX,posY,posZ];
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//QWE
-		//ASD
+		Move();
+	}
+
+	void Move(){
+		//Q W E
+		//A S D
 		//前上奥
 		//左下右
 		if(!isMoveing){
-			if(Input.GetKey(KeyCode.W)){
-				targetPosition = presentPosition +  Vector3.up * GameManagerScript.multipleNumber;
+			if(Input.GetKeyDown(KeyCode.W) && valid(posY, dirStream.up)){
+				posY += 1;
+				targetPosition = mazePositions[posX,posY,posZ];
 				isMoveing = true;
 			}
-			if(Input.GetKey(KeyCode.S)){
-				targetPosition = presentPosition +  Vector3.up * GameManagerScript.multipleNumber * -1;
+			if(Input.GetKey(KeyCode.S) && valid(posY, dirStream.down)){
+				posY -= 1;
+				targetPosition = mazePositions[posX,posY,posZ];
 				isMoveing = true;
 			}
-			if(Input.GetKey(KeyCode.D)){
-				targetPosition = presentPosition +  Vector3.right * GameManagerScript.multipleNumber;
+
+			if(Input.GetKey(KeyCode.D) && valid(posX, dirStream.up)){
+				posX += 1;
+				targetPosition = mazePositions[posX,posY,posZ];
+				isMoveing = true;
+				Debug.Log("posX = " + posX);
+			}
+			if(Input.GetKey(KeyCode.A) && valid(posX, dirStream.down)){
+				posX -= 1;
+				targetPosition = mazePositions[posX,posY,posZ];
 				isMoveing = true;
 			}
-			if(Input.GetKey(KeyCode.A)){
-				targetPosition = presentPosition +  Vector3.right * GameManagerScript.multipleNumber * -1;
+
+			if(Input.GetKey(KeyCode.E) && valid(posZ, dirStream.up)){
+				posZ += 1;
+				targetPosition = mazePositions[posX,posY,posZ];
 				isMoveing = true;
 			}
-			if(Input.GetKey(KeyCode.E)){
-				targetPosition = presentPosition +  Vector3.forward * GameManagerScript.multipleNumber;
-				isMoveing = true;
-			}
-			if(Input.GetKey(KeyCode.Q)){
-				targetPosition = presentPosition +  Vector3.forward * GameManagerScript.multipleNumber * -1;
+			if(Input.GetKey(KeyCode.Q) && valid(posZ, dirStream.down)){
+				posZ -= 1;
+				targetPosition = mazePositions[posX,posY,posZ];
 				isMoveing = true;
 			}
 
 		}else{
 
 			transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
-			Debug.Log(transform.position);
-
 
 			if(Vector3.Distance( transform.position,targetPosition) <= 0.05f){
 				Debug.Log("到着！！");
-
 				Debug.Log(presentPosition);
-				presentPosition = transform.position;
+
+				presentPosition = mazePositions[posX,posY,posZ];
 				targetPosition = Vector3.zero;
 
 				isMoveing = false;
 			}
 		}
-
-
-
 	}
+
+	bool valid(int position, dirStream ds){
+
+		switch(ds){
+		case dirStream.up:
+			if(position < GameManagerScript.layerNumber - 1){
+				return true;
+			}else{
+				return false;
+			}
+			break;
+		case dirStream.down:
+			if(0 < position){
+				return true;
+			}else{
+				return false;
+			}
+			break;
+		default:
+			Debug.Log("入力ミス");
+			return false;
+			break;
+		}
+					
+	}
+
+	
 }
