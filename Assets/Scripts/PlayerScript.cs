@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour {
 		//前上奥
 		//左下右
 		if(!isMoveing){
-			if(Input.GetKeyDown(KeyCode.W) && valid(posY, dirStream.up)){
+			if(Input.GetKey(KeyCode.W) && valid(posY, dirStream.up)){
 				posY += 1;
 				targetPosition = mazePositions[posX,posY,posZ];
 				isMoveing = true;
@@ -96,6 +96,7 @@ public class PlayerScript : MonoBehaviour {
 				return false;
 			}
 			break;
+
 		case dirStream.down:
 			if(0 < position){
 				return true;
@@ -103,6 +104,7 @@ public class PlayerScript : MonoBehaviour {
 				return false;
 			}
 			break;
+
 		default:
 			Debug.Log("入力ミス");
 			return false;
