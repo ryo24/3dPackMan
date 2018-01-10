@@ -95,7 +95,6 @@ public class PlayerScript : MonoBehaviour {
 			}else{
 				return false;
 			}
-			break;
 
 		case dirStream.down:
 			if(0 < position){
@@ -103,12 +102,10 @@ public class PlayerScript : MonoBehaviour {
 			}else{
 				return false;
 			}
-			break;
 
 		default:
 			Debug.Log("入力ミス");
 			return false;
-			break;
 		}
 					
 	}

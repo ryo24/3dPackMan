@@ -9,7 +9,7 @@ public class EmemyScript : MonoBehaviour {
 	Vector3 presentPosition;
 	Vector3 targetPosition;
 	Vector3[,,] mazePositions;
-	int posX, posY, posZ = 0;
+	int posX, posY, posZ;
 
 	int count;
 	SeekPattern enemySeekPattern;
@@ -31,6 +31,10 @@ public class EmemyScript : MonoBehaviour {
 		}
 		count = 0;
 		isMoveing = false;
+        posX = 8;
+        posY = 8;
+        posZ = 8;
+
 		mazePositions = GameObject.Find("GameManager").GetComponent<GameManagerScript>().mazePointCoordinates;
 		presentPosition = mazePositions[posX,posY,posZ];
 		enemySeekPattern = SeekPattern.Chase;
@@ -39,11 +43,23 @@ public class EmemyScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		count++;
-		if(count > 500){
-			count = 0;
-
-		}
+        RandomWalk();
+		//count++;
+		//if( count > 500){
+		//	count = 0;
+  //          enemySeekPattern = nextSeekPattern(enemySeekPattern);
+		//}
+        //switch(enemySeekPattern){
+        //    case SeekPattern.Chase:
+        //        ChaseWalk();
+        //        break;
+        //    case SeekPattern.Random:
+        //        RandomWalk();
+        //        break;
+        //    default:
+        //        ChaseWalk();
+        //        break;
+        //}
 	}
 
 	SeekPattern nextSeekPattern(SeekPattern sk){
@@ -60,11 +76,107 @@ public class EmemyScript : MonoBehaviour {
 		
 	}
 
-	void Chase(){
+    void ChaseWalk(){
 		
 	}
 
-	void Random(){
+    void RandomWalk(){
+        int randomDir = UnityEngine.Random.Range(0, 5);
+        //bool StreamDir = (UnityEngine.Random.value > 0.5f) ? true : false;
+
+        if(!isMoveing){
+            switch (randomDir){
+                case 0:
+                    if (valid(posY, dirStream.up)) {
+                        posY += 1;
+                        targetPosition = mazePositions[posX, posY, posZ];
+                        isMoveing = true;
+                    }
+                    break;
+                case 1:
+                    if (valid(posY, dirStream.down)) {
+                        posY -= 1;
+                        targetPosition = mazePositions[posX, posY, posZ];
+                        isMoveing = true;
+                    }
+                    break;
+
+                case 2:
+                    if (valid(posX, dirStream.up)) {
+                        posX += 1;
+                        targetPosition = mazePositions[posX, posY, posZ];
+                        isMoveing = true;
+                        Debug.Log("posX = " + posX);
+                    }
+                    break;
+
+                case 3:
+                    if (valid(posX, dirStream.down)) {
+                        posX -= 1;
+                        targetPosition = mazePositions[posX, posY, posZ];
+                        isMoveing = true;
+                    }
+                    break;
+
+                case 4:
+                    if (valid(posZ, dirStream.up)) {
+                        posZ += 1;
+                        targetPosition = mazePositions[posX, posY, posZ];
+                        isMoveing = true;
+                    }
+                    break;
+
+                case 5:
+                    if (valid(posZ, dirStream.down)) {
+                        posZ -= 1;
+                        targetPosition = mazePositions[posX, posY, posZ];
+                        isMoveing = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
+
+            if (Vector3.Distance(transform.position, targetPosition) <= 0.05f) {
+                Debug.Log("敵到着！！");
+                Debug.Log(presentPosition);
+
+                presentPosition = mazePositions[posX, posY, posZ];
+                targetPosition = Vector3.zero;
+
+                isMoveing = false;
+            }        
+        }
 		
 	}
+
+    bool valid(int position, dirStream ds) {
+
+        switch (ds) {
+            case dirStream.up:
+                if (position < GameManagerScript.layerNumber - 1) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            case dirStream.down:
+                if (0 < position) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            default:
+                Debug.Log("入力ミス");
+                return false;
+        }
+
+    }
+
+
 }
