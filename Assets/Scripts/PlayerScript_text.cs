@@ -15,7 +15,8 @@ public class PlayerScrip_text : MonoBehaviour {
 			speed = 5f;
 		}
 		presentPosition = Vector3.zero;
-		
+
+
 	}
 	
 	// Update is called once per frame
