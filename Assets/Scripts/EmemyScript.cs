@@ -9,10 +9,12 @@ public class EmemyScript : MonoBehaviour {
 	Vector3 presentPosition;
 	Vector3 targetPosition;
 	Vector3[,,] mazePositions;
+    [SerializeField]
     int indexX, indexY, indexZ;
 
 	int count;
-	SeekPattern enemySeekPattern;
+    [SerializeField]
+    SeekPattern enemySeekPattern;
 
 	enum dirStream{
 		up,
@@ -31,9 +33,9 @@ public class EmemyScript : MonoBehaviour {
 		}
 		count = 0;
 		isMoveing = false;
-        indexX = 5;
-        indexY = 5;
-        indexZ = 5;
+        indexX = 4;
+        indexY = 4;
+        indexZ = 4;
 
 		mazePositions = GameObject.Find("GameManager").GetComponent<GameManagerScript>().mazePointCoordinates;
 		presentPosition = mazePositions[indexX,indexY,indexZ];
@@ -81,10 +83,12 @@ public class EmemyScript : MonoBehaviour {
 	}
 
     void RandomWalk(){
-        int randomDir = UnityEngine.Random.Range(0, 5);
         //bool StreamDir = (UnityEngine.Random.value > 0.5f) ? true : false;
 
         if(!isMoveing){
+            int randomDir = UnityEngine.Random.Range(0, 5);
+            Debug.Log(randomDir);
+
             switch (randomDir){
                 case 0:
                     if (valid(indexY, dirStream.up)) {
@@ -98,6 +102,7 @@ public class EmemyScript : MonoBehaviour {
                         indexY -= 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
+                        Debug.Log(targetPosition);
                     }
                     break;
 
@@ -115,6 +120,8 @@ public class EmemyScript : MonoBehaviour {
                         indexX -= 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
+                        Debug.Log(targetPosition);
+
                     }
                     break;
 
@@ -131,6 +138,8 @@ public class EmemyScript : MonoBehaviour {
                         indexZ -= 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
+                        Debug.Log(targetPosition);
+
                     }
                     break;
                 default:
@@ -152,11 +161,11 @@ public class EmemyScript : MonoBehaviour {
 		
 	}
 
-    bool valid(int position, dirStream ds) {
+    bool valid(int indexN, dirStream ds) {
 
         switch (ds) {
             case dirStream.up:
-                if (position < GameManagerScript.layerNumber - 1) {
+                if (indexN < GameManagerScript.layerNumber - 1) {
                     return true;
                 }
                 else {
@@ -164,7 +173,7 @@ public class EmemyScript : MonoBehaviour {
                 }
 
             case dirStream.down:
-                if (0 < position) {
+                if (0 < indexN) {
                     return true;
                 }
                 else {
