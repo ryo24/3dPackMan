@@ -9,7 +9,7 @@ public class EmemyScript : MonoBehaviour {
 	Vector3 presentPosition;
 	Vector3 targetPosition;
 	Vector3[,,] mazePositions;
-	int posX, posY, posZ;
+    int indexX, indexY, indexZ;
 
 	int count;
 	SeekPattern enemySeekPattern;
@@ -31,12 +31,12 @@ public class EmemyScript : MonoBehaviour {
 		}
 		count = 0;
 		isMoveing = false;
-        posX = 8;
-        posY = 8;
-        posZ = 8;
+        indexX = 5;
+        indexY = 5;
+        indexZ = 5;
 
 		mazePositions = GameObject.Find("GameManager").GetComponent<GameManagerScript>().mazePointCoordinates;
-		presentPosition = mazePositions[posX,posY,posZ];
+		presentPosition = mazePositions[indexX,indexY,indexZ];
 		enemySeekPattern = SeekPattern.Chase;
 		
 	}
@@ -87,49 +87,49 @@ public class EmemyScript : MonoBehaviour {
         if(!isMoveing){
             switch (randomDir){
                 case 0:
-                    if (valid(posY, dirStream.up)) {
-                        posY += 1;
-                        targetPosition = mazePositions[posX, posY, posZ];
+                    if (valid(indexY, dirStream.up)) {
+                        indexY += 1;
+                        targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
                     }
                     break;
                 case 1:
-                    if (valid(posY, dirStream.down)) {
-                        posY -= 1;
-                        targetPosition = mazePositions[posX, posY, posZ];
+                    if (valid(indexY, dirStream.down)) {
+                        indexY -= 1;
+                        targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
                     }
                     break;
 
                 case 2:
-                    if (valid(posX, dirStream.up)) {
-                        posX += 1;
-                        targetPosition = mazePositions[posX, posY, posZ];
+                    if (valid(indexX, dirStream.up)) {
+                        indexX += 1;
+                        targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
-                        Debug.Log("posX = " + posX);
+                        Debug.Log("posX = " + indexX);
                     }
                     break;
 
                 case 3:
-                    if (valid(posX, dirStream.down)) {
-                        posX -= 1;
-                        targetPosition = mazePositions[posX, posY, posZ];
+                    if (valid(indexX, dirStream.down)) {
+                        indexX -= 1;
+                        targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
                     }
                     break;
 
                 case 4:
-                    if (valid(posZ, dirStream.up)) {
-                        posZ += 1;
-                        targetPosition = mazePositions[posX, posY, posZ];
+                    if (valid(indexZ, dirStream.up)) {
+                        indexZ += 1;
+                        targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
                     }
                     break;
 
                 case 5:
-                    if (valid(posZ, dirStream.down)) {
-                        posZ -= 1;
-                        targetPosition = mazePositions[posX, posY, posZ];
+                    if (valid(indexZ, dirStream.down)) {
+                        indexZ -= 1;
+                        targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
                     }
                     break;
@@ -143,7 +143,7 @@ public class EmemyScript : MonoBehaviour {
                 Debug.Log("敵到着！！");
                 Debug.Log(presentPosition);
 
-                presentPosition = mazePositions[posX, posY, posZ];
+                presentPosition = mazePositions[indexX, indexY, indexZ];
                 targetPosition = Vector3.zero;
 
                 isMoveing = false;

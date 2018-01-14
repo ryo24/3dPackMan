@@ -8,7 +8,7 @@ public class PlayerScript : MonoBehaviour {
 	Vector3 presentPosition;
 	Vector3 targetPosition;
 	Vector3[,,] mazePositions;
-	int posX, posY, posZ = 0;
+    int indexX, indexY, indexZ = 0;
 
 	enum dirStream{
 		up,
@@ -22,7 +22,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 		isMoveing = false;
 		mazePositions = GameObject.Find("GameManager").GetComponent<GameManagerScript>().mazePointCoordinates;
-		presentPosition = mazePositions[posX,posY,posZ];
+		presentPosition = mazePositions[indexX,indexY,indexZ];
 	}
 	
 	// Update is called once per frame
@@ -36,37 +36,37 @@ public class PlayerScript : MonoBehaviour {
 		//前上奥
 		//左下右
 		if(!isMoveing){
-			if(Input.GetKey(KeyCode.W) && valid(posY, dirStream.up)){
-				posY += 1;
-				targetPosition = mazePositions[posX,posY,posZ];
+			if(Input.GetKey(KeyCode.W) && valid(indexY, dirStream.up)){
+				indexY += 1;
+				targetPosition = mazePositions[indexX,indexY,indexZ];
 				isMoveing = true;
 			}
-			if(Input.GetKey(KeyCode.S) && valid(posY, dirStream.down)){
-				posY -= 1;
-				targetPosition = mazePositions[posX,posY,posZ];
-				isMoveing = true;
-			}
-
-			if(Input.GetKey(KeyCode.D) && valid(posX, dirStream.up)){
-				posX += 1;
-				targetPosition = mazePositions[posX,posY,posZ];
-				isMoveing = true;
-				Debug.Log("posX = " + posX);
-			}
-			if(Input.GetKey(KeyCode.A) && valid(posX, dirStream.down)){
-				posX -= 1;
-				targetPosition = mazePositions[posX,posY,posZ];
+			if(Input.GetKey(KeyCode.S) && valid(indexY, dirStream.down)){
+				indexY -= 1;
+				targetPosition = mazePositions[indexX,indexY,indexZ];
 				isMoveing = true;
 			}
 
-			if(Input.GetKey(KeyCode.E) && valid(posZ, dirStream.up)){
-				posZ += 1;
-				targetPosition = mazePositions[posX,posY,posZ];
+			if(Input.GetKey(KeyCode.D) && valid(indexX, dirStream.up)){
+				indexX += 1;
+				targetPosition = mazePositions[indexX,indexY,indexZ];
+				isMoveing = true;
+				Debug.Log("posX = " + indexX);
+			}
+			if(Input.GetKey(KeyCode.A) && valid(indexX, dirStream.down)){
+				indexX -= 1;
+				targetPosition = mazePositions[indexX,indexY,indexZ];
 				isMoveing = true;
 			}
-			if(Input.GetKey(KeyCode.Q) && valid(posZ, dirStream.down)){
-				posZ -= 1;
-				targetPosition = mazePositions[posX,posY,posZ];
+
+			if(Input.GetKey(KeyCode.E) && valid(indexZ, dirStream.up)){
+				indexZ += 1;
+				targetPosition = mazePositions[indexX,indexY,indexZ];
+				isMoveing = true;
+			}
+			if(Input.GetKey(KeyCode.Q) && valid(indexZ, dirStream.down)){
+				indexZ -= 1;
+				targetPosition = mazePositions[indexX,indexY,indexZ];
 				isMoveing = true;
 			}
 
@@ -78,7 +78,7 @@ public class PlayerScript : MonoBehaviour {
 				Debug.Log("到着！！");
 				Debug.Log(presentPosition);
 
-				presentPosition = mazePositions[posX,posY,posZ];
+				presentPosition = mazePositions[indexX,indexY,indexZ];
 				targetPosition = Vector3.zero;
 
 				isMoveing = false;
