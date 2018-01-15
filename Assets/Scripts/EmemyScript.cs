@@ -16,6 +16,8 @@ public class EmemyScript : MonoBehaviour {
     [SerializeField]
     SeekPattern enemySeekPattern;
 
+    Vector3 playerPosition;
+
 	enum dirStream{
 		up,
 		down
@@ -38,6 +40,7 @@ public class EmemyScript : MonoBehaviour {
         indexZ = 4;
 
 		mazePositions = GameObject.Find("GameManager").GetComponent<GameManagerScript>().mazePointCoordinates;
+        playerPosition = GameObject.Find("Player").transform.position;
 		presentPosition = mazePositions[indexX,indexY,indexZ];
 		enemySeekPattern = SeekPattern.Chase;
 		
@@ -79,6 +82,26 @@ public class EmemyScript : MonoBehaviour {
 	}
 
     void ChaseWalk(){
+        if(!isMoveing){
+            playerPosition = GameObject.Find("Player").transform.position;
+            Vector3 playerDir = Vector3.Normalize(playerPosition - transform.position);
+            float xDot = Vector3.Dot(playerDir, Vector3.right);
+            float yDot = Vector3.Dot(playerDir, Vector3.up);
+            float zDot = Vector3.Dot(playerDir, Vector3.forward);
+
+        }else{
+            transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
+
+            if (Vector3.Distance(transform.position, targetPosition) <= 0.05f) {
+                Debug.Log("敵到着！！");
+                Debug.Log(presentPosition);
+
+                presentPosition = mazePositions[indexX, indexY, indexZ];
+                targetPosition = Vector3.zero;
+
+                isMoveing = false;
+            }
+        }
 		
 	}
 
@@ -86,10 +109,10 @@ public class EmemyScript : MonoBehaviour {
         //bool StreamDir = (UnityEngine.Random.value > 0.5f) ? true : false;
 
         if(!isMoveing){
-            int randomDir = UnityEngine.Random.Range(0, 5);
-            Debug.Log(randomDir);
+            int randomDirNumber = UnityEngine.Random.Range(0, 5);
+            Debug.Log(randomDirNumber);
 
-            switch (randomDir){
+            switch (randomDirNumber){
                 case 0:
                     if (valid(indexY, dirStream.up)) {
                         indexY += 1;
