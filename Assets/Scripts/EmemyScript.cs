@@ -28,6 +28,15 @@ public class EmemyScript : MonoBehaviour {
 		Random
 	}
 
+    enum dirNumber{
+        UP = 0,
+        DOWN = 1,
+        RIGHT = 2,
+        LEFT = 3,
+        FORWARD = 4,
+        BACK = 5
+    }
+
 	// Use this for initialization
 	void Start () {
 		if(speed < 0.01f){
@@ -88,6 +97,27 @@ public class EmemyScript : MonoBehaviour {
             float xDot = Vector3.Dot(playerDir, Vector3.right);
             float yDot = Vector3.Dot(playerDir, Vector3.up);
             float zDot = Vector3.Dot(playerDir, Vector3.forward);
+
+            int chaseDirNumber = 0;
+            //45度の角度にいるかをφ→θの順番で計算する
+            if (yDot > Mathf.Cos(Mathf.PI / 4f)) {
+                chaseDirNumber = 0;
+            }else if (yDot < Mathf.Cos(Mathf.PI * 3/ 4f)){
+                chaseDirNumber = 1;
+            }else{
+                if (xDot > Mathf.Cos(Mathf.PI / 4f)) {
+                    chaseDirNumber = 3;
+                }
+                else if (xDot < Mathf.Cos(Mathf.PI * 3 / 4f)) {
+                    chaseDirNumber = 4;
+                }else{
+                    chaseDirNumber = zDot > 0 ? 5 : 6;
+                }
+            }
+              
+
+
+
 
         }else{
             transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
