@@ -57,7 +57,7 @@ public class EmemyScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        RandomWalk();
+        ChaseWalk();
 		//count++;
 		//if( count > 500){
 		//	count = 0;
@@ -91,7 +91,6 @@ public class EmemyScript : MonoBehaviour {
 	}
 
     void ChaseWalk(){
-        if(!isMoveing){
             playerPosition = GameObject.Find("Player").transform.position;
             Vector3 playerDir = Vector3.Normalize(playerPosition - transform.position);
             float xDot = Vector3.Dot(playerDir, Vector3.right);
@@ -106,43 +105,32 @@ public class EmemyScript : MonoBehaviour {
                 chaseDirNumber = 1;
             }else{
                 if (xDot > Mathf.Cos(Mathf.PI / 4f)) {
-                    chaseDirNumber = 3;
+                    chaseDirNumber = 2;
                 }
                 else if (xDot < Mathf.Cos(Mathf.PI * 3 / 4f)) {
-                    chaseDirNumber = 4;
+                    chaseDirNumber = 3;
                 }else{
-                    chaseDirNumber = zDot > 0 ? 5 : 6;
+                    chaseDirNumber = zDot > 0 ? 4 : 5;
                 }
             }
-              
 
-
-
-
-        }else{
-            transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
-
-            if (Vector3.Distance(transform.position, targetPosition) <= 0.05f) {
-                Debug.Log("敵到着！！");
-                Debug.Log(presentPosition);
-
-                presentPosition = mazePositions[indexX, indexY, indexZ];
-                targetPosition = Vector3.zero;
-
-                isMoveing = false;
-            }
-        }
+            Debug.Log("ChaseDirNumber = " + chaseDirNumber);
+            BaseWalk(chaseDirNumber);
 		
 	}
 
     void RandomWalk(){
         //bool StreamDir = (UnityEngine.Random.value > 0.5f) ? true : false;
+        int randomDirNumber = UnityEngine.Random.Range(0, 5);
+        Debug.Log(randomDirNumber);
+        BaseWalk(randomDirNumber);
 
-        if(!isMoveing){
-            int randomDirNumber = UnityEngine.Random.Range(0, 5);
-            Debug.Log(randomDirNumber);
+		
+	}
 
-            switch (randomDirNumber){
+    void BaseWalk(int directionNumber){
+        if (!isMoveing) {
+            switch (directionNumber) {
                 case 0:
                     if (valid(indexY, dirStream.up)) {
                         indexY += 1;
@@ -198,7 +186,8 @@ public class EmemyScript : MonoBehaviour {
                 default:
                     break;
             }
-        }else{
+        }
+        else {
             transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
 
             if (Vector3.Distance(transform.position, targetPosition) <= 0.05f) {
@@ -209,10 +198,9 @@ public class EmemyScript : MonoBehaviour {
                 targetPosition = Vector3.zero;
 
                 isMoveing = false;
-            }        
+            }
         }
-		
-	}
+    }
 
     bool valid(int indexN, dirStream ds) {
 
