@@ -18,6 +18,8 @@ public class EmemyScript : MonoBehaviour {
 
     Vector3 playerPosition;
 
+    public Material[] colorMatsArray = new Material[2];
+
 	enum dirStream{
 		up,
 		down
@@ -57,28 +59,36 @@ public class EmemyScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        ChaseWalk();
-		//count++;
+        //ChaseWalk();
+		count++;
+        if( count > 500){
+          count = 0;
+            enemySeekPattern = UnityEngine.Random.value > 0.5 ? SeekPattern.Chase : SeekPattern.Random;
+        }
 		//if( count > 500){
 		//	count = 0;
   //          enemySeekPattern = nextSeekPattern(enemySeekPattern);
 		//}
-        //switch(enemySeekPattern){
-        //    case SeekPattern.Chase:
-        //        ChaseWalk();
-        //        break;
-        //    case SeekPattern.Random:
-        //        RandomWalk();
-        //        break;
-        //    default:
-        //        ChaseWalk();
-        //        break;
-        //}
+        switch(enemySeekPattern){
+            case SeekPattern.Chase:
+                ChaseWalk();
+                gameObject.GetComponent<MeshRenderer>().material = colorMatsArray[0];
+                break;
+            case SeekPattern.Random:
+                RandomWalk();
+                gameObject.GetComponent<MeshRenderer>().material = colorMatsArray[1];
+
+                break;
+            default:
+                ChaseWalk();
+                break;
+        }
 	}
 
 	SeekPattern nextSeekPattern(SeekPattern sk){
 		int number = (int)sk;
 		number++;
+
 		SeekPattern nextSk;
 		if(Enum.IsDefined(typeof(SeekPattern), number)){
 			nextSk = (SeekPattern)number;

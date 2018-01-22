@@ -293,6 +293,9 @@ MonoBehaviour:
   indexY: 0
   indexZ: 0
   enemySeekPattern: 0
+  colorMatsArray:
+  - {fileID: 2100000, guid: 494eabcbcfaf94eeb93013310d7a0838, type: 2}
+  - {fileID: 2100000, guid: 57dd6565a785346a8b0d30de190427b7, type: 2}
 --- !u!1 &1366331192
 GameObject:
   m_ObjectHideFlags: 0
