@@ -60,29 +60,34 @@ public class EmemyScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //ChaseWalk();
-		count++;
-        if( count > 500){
-          count = 0;
-            enemySeekPattern = UnityEngine.Random.value > 0.5 ? SeekPattern.Chase : SeekPattern.Random;
-        }
+        RandomWalk();
+
+		//count++;
+        //if( count > 500){
+        //  count = 0;
+        //    enemySeekPattern = UnityEngine.Random.value > 0.5 ? SeekPattern.Chase : SeekPattern.Random;
+        //}
+
+        //本当は複数パターンに対応したい
 		//if( count > 500){
 		//	count = 0;
   //          enemySeekPattern = nextSeekPattern(enemySeekPattern);
 		//}
-        switch(enemySeekPattern){
-            case SeekPattern.Chase:
-                ChaseWalk();
-                gameObject.GetComponent<MeshRenderer>().material = colorMatsArray[0];
-                break;
-            case SeekPattern.Random:
-                RandomWalk();
-                gameObject.GetComponent<MeshRenderer>().material = colorMatsArray[1];
 
-                break;
-            default:
-                ChaseWalk();
-                break;
-        }
+        //switch(enemySeekPattern){
+        //    case SeekPattern.Chase:
+        //        ChaseWalk();
+        //        gameObject.GetComponent<MeshRenderer>().material = colorMatsArray[0];
+        //        break;
+        //    case SeekPattern.Random:
+        //        RandomWalk();
+        //        gameObject.GetComponent<MeshRenderer>().material = colorMatsArray[1];
+
+        //        break;
+        //    default:
+        //        ChaseWalk();
+        //        break;
+        //}
 	}
 
 	SeekPattern nextSeekPattern(SeekPattern sk){
@@ -132,7 +137,7 @@ public class EmemyScript : MonoBehaviour {
     void RandomWalk(){
         //bool StreamDir = (UnityEngine.Random.value > 0.5f) ? true : false;
         int randomDirNumber = UnityEngine.Random.Range(0, 5);
-        Debug.Log(randomDirNumber);
+        //Debug.Log(randomDirNumber);
         BaseWalk(randomDirNumber);
 
 		
@@ -153,7 +158,6 @@ public class EmemyScript : MonoBehaviour {
                         indexY -= 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
-                        Debug.Log(targetPosition);
                     }
                     break;
 
@@ -162,7 +166,6 @@ public class EmemyScript : MonoBehaviour {
                         indexX += 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
-                        Debug.Log("posX = " + indexX);
                     }
                     break;
 
@@ -171,7 +174,6 @@ public class EmemyScript : MonoBehaviour {
                         indexX -= 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
-                        Debug.Log(targetPosition);
 
                     }
                     break;
@@ -189,7 +191,6 @@ public class EmemyScript : MonoBehaviour {
                         indexZ -= 1;
                         targetPosition = mazePositions[indexX, indexY, indexZ];
                         isMoveing = true;
-                        Debug.Log(targetPosition);
 
                     }
                     break;
@@ -201,8 +202,8 @@ public class EmemyScript : MonoBehaviour {
             transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
 
             if (Vector3.Distance(transform.position, targetPosition) <= 0.05f) {
-                Debug.Log("敵到着！！");
-                Debug.Log(presentPosition);
+                //Debug.Log("敵到着！！");
+                //Debug.Log(presentPosition);
 
                 presentPosition = mazePositions[indexX, indexY, indexZ];
                 targetPosition = Vector3.zero;

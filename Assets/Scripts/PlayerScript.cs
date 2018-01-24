@@ -74,7 +74,7 @@ public class PlayerScript : MonoBehaviour {
 
 			transform.position += Vector3.Normalize(targetPosition - transform.position) * Time.deltaTime * speed;
 
-			if(Vector3.Distance( transform.position,targetPosition) <= 0.05f){
+			if(Vector3.Distance( transform.position,targetPosition) <= 0.1f){
 				Debug.Log("到着！！");
 				Debug.Log(presentPosition);
 
